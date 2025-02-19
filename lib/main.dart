@@ -21,6 +21,7 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
   int energyLevel = 100;
   Color petColor = Colors.yellow;
   String petMood = "Neutral 😐";
+  String selectedActivity = "Rest";
   
   final TextEditingController _nameController = TextEditingController();
   Timer? _hungerTimer;
@@ -185,6 +186,21 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
             Text(
               'Name: $petName',
               style: TextStyle(fontSize: 20.0),
+            ),
+            DropdownButton<String>(
+              value: selectedActivity,
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedActivity = newValue!;
+                });
+              },
+              items: <String>["Rest", "Exercise"]
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
             ),
             SizedBox(height: 16.0),
             Text(
