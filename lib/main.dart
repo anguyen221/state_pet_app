@@ -15,6 +15,7 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
   String petName = "Your Pet";
   int happinessLevel = 50;
   int hungerLevel = 50;
+  Color petColor = Colors.yellow;
   
   final TextEditingController _nameController = TextEditingController();
 
@@ -24,10 +25,23 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
     });
   }
 
+  void _updatePetColor() {
+    setState(() {
+      if (happinessLevel > 70) {
+        petColor = Colors.green;
+      } else if (happinessLevel < 30) {
+        petColor = Colors.red;
+      } else {
+        petColor = Colors.yellow;
+      }
+    });
+  }
+
   void _playWithPet() {
     setState(() {
       happinessLevel = (happinessLevel + 10).clamp(0, 100);
       _updateHunger();
+      _updatePetColor();
     });
   }
 
@@ -35,6 +49,7 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
     setState(() {
       hungerLevel = (hungerLevel - 10).clamp(0, 100);
       _updateHappiness();
+      _updatePetColor();
     });
   }
 
@@ -77,6 +92,15 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
             ElevatedButton(
               onPressed: _setPetName,
               child: Text("Set Name"),
+            ),
+            SizedBox(height: 16.0),
+            Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                color: petColor,
+                shape: BoxShape.circle,
+              ),
             ),
             SizedBox(height: 16.0),
             Text(
