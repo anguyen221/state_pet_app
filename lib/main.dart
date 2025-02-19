@@ -15,8 +15,15 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
   String petName = "Your Pet";
   int happinessLevel = 50;
   int hungerLevel = 50;
+  
+  final TextEditingController _nameController = TextEditingController();
 
-  // Function to increase happiness and update hunger when playing with the pet
+  void _setPetName() {
+    setState(() {
+      petName = _nameController.text.isNotEmpty ? _nameController.text : "Your Pet";
+    });
+  }
+
   void _playWithPet() {
     setState(() {
       happinessLevel = (happinessLevel + 10).clamp(0, 100);
@@ -24,7 +31,6 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
     });
   }
 
-  // Function to decrease hunger and update happiness when feeding the pet
   void _feedPet() {
     setState(() {
       hungerLevel = (hungerLevel - 10).clamp(0, 100);
@@ -32,7 +38,6 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
     });
   }
 
-  // Update happiness based on hunger level
   void _updateHappiness() {
     if (hungerLevel < 30) {
       happinessLevel = (happinessLevel - 20).clamp(0, 100);
@@ -41,7 +46,6 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
     }
   }
 
-  // Increase hunger level slightly when playing with the pet
   void _updateHunger() {
     hungerLevel = (hungerLevel + 5).clamp(0, 100);
     if (hungerLevel > 100) {
@@ -60,6 +64,21 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: _nameController,
+                decoration: InputDecoration(
+                  labelText: "Enter Pet Name",
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: _setPetName,
+              child: Text("Set Name"),
+            ),
+            SizedBox(height: 16.0),
             Text(
               'Name: $petName',
               style: TextStyle(fontSize: 20.0),
