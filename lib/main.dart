@@ -16,6 +16,7 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
   String petName = "Your Pet";
   int happinessLevel = 50;
   int hungerLevel = 50;
+  int energyLevel = 100;
   Color petColor = Colors.yellow;
   String petMood = "Neutral 😐";
   
@@ -168,6 +169,15 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
                 color: petColor,
                 shape: BoxShape.circle,
               ),
+            ),
+            SizedBox(height: 16.0),
+            Text(
+              'Energy Level:',
+              style: TextStyle(fontSize: 20.0),
+            ),
+            LinearProgressIndicator(
+              value: energyLevel / 100,
+              minHeight: 10,
             ),
             SizedBox(height: 16.0),
             Text(
