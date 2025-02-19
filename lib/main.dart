@@ -21,11 +21,13 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
   
   final TextEditingController _nameController = TextEditingController();
   Timer? _hungerTimer;
+  Timer? _winConditionTimer;
 
   @override
   void initState() {
     super.initState();
     _startHungerTimer();
+    _startWinConditionTimer();
   }
 
   void _startHungerTimer() {
@@ -33,13 +35,51 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
       setState(() {
         hungerLevel = (hungerLevel + 5).clamp(0, 100);
         _updatePetColorAndMood();
+        _checkLossCondition();
       });
     });
+  }
+
+  void _startWinConditionTimer() {
+    _winConditionTimer = Timer.periodic(Duration(minutes: 1), (timer) {
+      if (happinessLevel > 80) {
+        _showMessage("You Win!");
+        _winConditionTimer?.cancel();
+      }
+    });
+  }
+
+  void _checkLossCondition() {
+    if (hungerLevel == 100 && happinessLevel <= 10) {
+      _showMessage("Game Over!");
+      _hungerTimer?.cancel();
+      _winConditionTimer?.cancel();
+    }
+  }
+
+  void _showMessage(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(message),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   void dispose() {
     _hungerTimer?.cancel();
+    _winConditionTimer?.cancel();
     super.dispose();
   }
 
